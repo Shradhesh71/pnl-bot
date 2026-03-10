@@ -4,3 +4,12 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+yellowstone-grpc-client = "6.0.0"
+yellowstone-grpc-proto  = "6.0.0"
+bs58    = "0.5"
+futures = "0.3"
+tonic   = "0.12"
+anyhow = "1.0.102"
+tracing = "0.1.44"
+tracing-subscriber = "0.3"
+tokio = { version = "1.50.0", features = ["rt-multi-thread", "macros"] }

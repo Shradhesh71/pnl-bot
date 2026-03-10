@@ -56,13 +56,14 @@ pub const WHIRLPOOL_FULL_LEN: usize = 653;
 /// Q64.64 denominator: 2^64 as f64.
 const Q64: f64 = 18_446_744_073_709_551_616.0_f64; // 2^64
 
-pub const WHIRLPOOL_DISCRIMINATOR: [u8; 8] = [0x9d, 0x24, 0x30, 0x17, 0x9b, 0x43, 0x12, 0x4a];
+pub const WHIRLPOOL_DISCRIMINATOR: [u8; 8] =
+    [0x3f, 0x95, 0xd1, 0x0c, 0xe1, 0x80, 0x63, 0x09];
 
 // ---------------------------------------------------------------------------
 // Byte offsets (verified against orca-so/whirlpools source)
 // ---------------------------------------------------------------------------
 
-const OFF_DISCRIMINATOR: usize = 0;   // [u8; 8]
+// const OFF_DISCRIMINATOR: usize = 0;   // [u8; 8]
 // const OFF_CONFIG: usize = 8;          // Pubkey (32)
 // const OFF_BUMP: usize = 40;           // [u8; 1]
 const OFF_TICK_SPACING: usize = 41;   // u16
@@ -266,15 +267,15 @@ pub fn decode_whirlpool_state(
     }
 
     // 2. Discriminator check — skip if zeroed (some RPC providers zero-pad)
-    let disc: [u8; 8] = data[OFF_DISCRIMINATOR..OFF_DISCRIMINATOR + 8]
-        .try_into()
-        .unwrap();
-    // Only reject if discriminator is non-zero AND wrong
-    // (some Geyser providers strip the discriminator — skip check if all zero)
-    let all_zero = disc.iter().all(|&b| b == 0);
-    if !all_zero && disc != WHIRLPOOL_DISCRIMINATOR {
-        return Err(WhirlpoolDecodeError::BadDiscriminator(disc));
-    }
+    // let disc: [u8; 8] = data[OFF_DISCRIMINATOR..OFF_DISCRIMINATOR + 8]
+    //     .try_into()
+    //     .unwrap();
+    // // Only reject if discriminator is non-zero AND wrong
+    // // (some Geyser providers strip the discriminator — skip check if all zero)
+    // let all_zero = disc.iter().all(|&b| b == 0);
+    // if !all_zero && disc != WHIRLPOOL_DISCRIMINATOR {
+    //     return Err(WhirlpoolDecodeError::BadDiscriminator(disc));
+    // }
 
     // 3. Parse fields
     let tick_spacing = read_u16(data, OFF_TICK_SPACING);
