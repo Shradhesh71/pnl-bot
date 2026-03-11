@@ -10,7 +10,7 @@
 //! └── execution   — live order execution (Phase 5)
 
 pub mod dex;
-
+pub mod strategy;
 
 pub use dex::whirlpool::{
     DecimalConfig,
