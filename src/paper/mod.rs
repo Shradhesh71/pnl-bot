@@ -28,7 +28,7 @@
 
 pub mod paper_engine;
 pub mod pnl_tracker;
-pub mod slippage_model;
+// pub mod slippage_model;
 
 // ── re-exports ──────────────────────────────────────────────────────────────
 
@@ -44,7 +44,7 @@ pub use pnl_tracker::{
     PnlTracker,
 };
 
-pub use slippage_model::{
-    SlippageConfig,
-    estimate_slippage,
-};
+// pub use slippage_model::{
+//     SlippageConfig,
+//     estimate_slippage,
+// };
