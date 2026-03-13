@@ -17,7 +17,7 @@
 //! |------------------------|-----------|------------------------------------|
 //! | `INITIAL_BALANCE`      | 10000.0   | Starting USDC balance              |
 //! | `TRADE_SIZE`           | 1000.0    | Notional per trade                 |
-//! | `MIN_NET_SPREAD_PCT`   | 0.20      | Signal threshold (% after fees)    |
+//! | `MIN_NET_SPREAD_PCT`   | 0.15      | Signal threshold (% after fees)    |
 //! | `CEX_VOLATILITY`       | 0.0015    | Fake Binance random walk amplitude |
 //! | `SPIKE_PROBABILITY`    | 0.01      | Probability of a price spike/tick  |
 //!
@@ -86,6 +86,7 @@ struct DemoConfig {
     initial_balance:    f64,
     trade_size:         f64,
     min_net_spread_pct: f64,
+    max_net_spread_pct: f64,
     cex_volatility:     f64,   // random walk amplitude per 100ms tick
     spike_probability:  f64,   // probability of injecting a 0.5% spike
     spike_magnitude:    f64,   // spike size as a fraction
@@ -96,7 +97,8 @@ impl DemoConfig {
         Self {
             initial_balance:    env_f64("INITIAL_BALANCE",    10_000.0),
             trade_size:         env_f64("TRADE_SIZE",          1_000.0),
-            min_net_spread_pct: env_f64("MIN_NET_SPREAD_PCT",     0.20),
+            min_net_spread_pct: env_f64("MIN_NET_SPREAD_PCT",     0.15),
+            max_net_spread_pct: env_f64("MIN_NET_SPREAD_PCT",     2.0),
             cex_volatility:     env_f64("CEX_VOLATILITY",        0.0015),
             spike_probability:  env_f64("SPIKE_PROBABILITY",      0.01),
             spike_magnitude:    env_f64("SPIKE_MAGNITUDE",        0.005),
@@ -177,6 +179,7 @@ async fn main() -> anyhow::Result<()> {
 
     let detector = Arc::new(SpreadDetector::new(SpreadConfig {
         min_net_spread_pct:     cfg.min_net_spread_pct,
+        max_spread_pct:         cfg.max_net_spread_pct,
         trade_size_usdt:        cfg.trade_size,
         cex_taker_fee_pct:      0.10,
         min_pool_liquidity_usd: 50_000.0,
@@ -517,7 +520,7 @@ async fn render(
     println!("┌─ Recent Signals (last 5) {}", "─".repeat(w - 27));
     if disp.signal_log.is_empty() {
         println!("│  (none yet — waiting for spread > {:.2}%)",
-            0.20);
+            0.15);
     } else {
         for sig in disp.signal_log.iter().rev().take(5) {
             println!("│  [{slot}] {dir} {spread:+.4}% → net=${net:.4}",
@@ -576,7 +579,7 @@ async fn render(
         println!("│  Elapsed: {}", snap.elapsed_human());
     } else {
         println!("│  No trades yet — spread must exceed {:.2}% net to fire",
-            0.20);
+            0.15);
         println!("│  Elapsed: {}", snap.elapsed_human());
     }
     println!("└{}", "─".repeat(w - 1));

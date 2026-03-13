@@ -60,8 +60,13 @@ use crate::{
 #[derive(Debug, Clone)]
 pub struct SpreadConfig {
     /// Minimum net spread (after fees + slippage) to emit a signal.
-    /// Default: 0.20% — covers Orca(0.05%) + Binance(0.10%) + slippage(0.05%)
+    /// Default: 0.15% — covers Orca(0.05%) + Binance(0.10%) + slippage(0.05%)
     pub min_net_spread_pct: f64,
+
+    /// Maximum believable spread — reject anything above this.
+    /// No real DEX/CEX arb opportunity ever exceeds 2%.
+    /// Default: 2.0%
+    pub max_spread_pct: f64,
 
     /// Notional trade size in USDC for profit calculations.
     /// Default: $1,000 — small enough to avoid large slippage.
@@ -91,7 +96,8 @@ pub struct SpreadConfig {
 impl Default for SpreadConfig {
     fn default() -> Self {
         Self {
-            min_net_spread_pct:     0.20,
+            min_net_spread_pct:     0.15,
+            max_spread_pct:         2.0,
             trade_size_usdt:        1_000.0,
             cex_taker_fee_pct:      0.10,
             min_pool_liquidity_usd: 50_000.0,
@@ -341,6 +347,12 @@ impl SpreadDetector {
             return None;
         }
 
+        // ── Gate 4.5: sanity cap on spread ───────────────────────────────────
+        if spread_abs_pct > self.config.max_spread_pct {
+            self.rejected_spread.fetch_add(1, Ordering::Relaxed);
+            return None;
+        }
+
         // ── Gate 5: Net profit after slippage ────────────────────────────
         let trade  = self.config.trade_size_usdt;
         let gross  = trade * spread_abs_pct / 100.0;
@@ -512,7 +524,8 @@ mod tests {
 
     fn detector() -> SpreadDetector {
         SpreadDetector::new(SpreadConfig {
-            min_net_spread_pct:     0.20,
+            min_net_spread_pct:     0.15,
+            max_spread_pct:         2.0,
             trade_size_usdt:        1_000.0,
             cex_taker_fee_pct:      0.10,
             min_pool_liquidity_usd: 50_000.0,

@@ -12,6 +12,7 @@
 pub mod dex;
 pub mod strategy;
 pub mod paper;
+pub mod execution;
 
 pub use dex::whirlpool::{
     DecimalConfig,

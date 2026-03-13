@@ -337,6 +337,23 @@ impl PriceState {
             return;
         }
 
+        // ── Cross-DEX sanity check ────────────────────────────────────────
+        // If the other DEX has a recent price, reject this update if it
+        // deviates by more than 3%. Partial Geyser updates can produce
+        // garbage decode values — the other DEX is our ground truth.
+        let other_price = match pool.dex {
+            DexKind::Orca    => self.raydium.load().map(|e| e.price),
+            DexKind::Raydium => self.orca.load().map(|e| e.price),
+        };
+
+        if let Some(other) = other_price {
+            let deviation = (pool.price - other).abs() / other;
+            if deviation > 0.03 {  // 3% max inter-DEX deviation
+                // Garbage decode — silently drop
+                return;
+            }
+        }
+
         let entry = DexEntry::from(pool);
 
         match pool.dex {
