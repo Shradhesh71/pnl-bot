@@ -98,6 +98,10 @@ pub mod pools {
     pub const ETH_USDC_64: &str  = "EVv4jPvUxbugw8EHTDwkNBcR4zizKNcryMFuyqw2haA3";
     /// BTC/USDC — tick_spacing 64
     pub const BTC_USDC_64: &str  = "9vqYJjDUFecLL2xPUC4Rc7hyCtZ6iJ4mDiVZX7aFXoAe";
+        
+    pub const WIF_USDC:  &str = "CN8M75cH57DuZNzW5wSUpTXtMrSfXBFScJoQxVCgAXes";
+    pub const BONK_USDC: &str = "8QaXeHBrShJTdtN1rWCccBxpSVvKksQ2PCu5nufb2zbk";
+    pub const JTO_USDC:  &str = "93MjUKNKxazKmgS3GBX2Gj2BttEjJUyi7NYeyDHdHSc2";    
 }
 
 // ---------------------------------------------------------------------------
@@ -118,6 +122,10 @@ impl DecimalConfig {
     pub const SOL_USDT: Self = Self { decimals_a: 9, decimals_b: 6 };
     pub const ETH_USDC: Self = Self { decimals_a: 8, decimals_b: 6 };
     pub const BTC_USDC: Self = Self { decimals_a: 8, decimals_b: 6 };
+
+    pub const WIF_USDC: Self = Self { decimals_a: 9, decimals_b: 6 };
+    pub const BONK_USDC: Self = Self { decimals_a: 8, decimals_b: 6 };
+    pub const JTO_USDC: Self = Self { decimals_a: 8, decimals_b: 6 };
 
     /// Decimal adjustment factor: 10^(decimals_a - decimals_b)
     #[inline]

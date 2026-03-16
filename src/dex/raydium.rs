@@ -111,6 +111,10 @@ pub mod pools {
     pub const ETH_USDC: &str  = "9Q5jxFomJL9TxjZSH2oG8FKe7hMwxp8jqL9TcBSusTSm";
     /// BTC/USDC — tick_spacing 64
     pub const BTC_USDC: &str  = "3ucNos4NbumPLZNWztqGZdfYExkm6Lpxa5Vc8FMFnJTY";
+
+    pub const WIF_USDC:  &str = "9agQfsmq3tEFNLDrpj3fdPzTXimTTZCaZLuZALsE6aZb";
+    pub const BONK_USDC: &str = "CVW96A5BGmdhmdQSU2tTwciJwyTJVJ1HxaKuAEAXXDVb";
+    pub const JTO_USDC:  &str = "<8qdAk17LVxKPecPCCRv5j8kBY5g73EvxdxLwo8t5nMYY";
 }
 
 // ---------------------------------------------------------------------------

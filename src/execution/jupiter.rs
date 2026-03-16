@@ -26,12 +26,6 @@
 //! `live_trading_enabled()` to be true. Paper mode returns
 //! `Err(SwapError::PaperMode)` without making any network request.
 //!
-//! # Token mints (mainnet)
-//!
-//! | Token | Mint                                          |
-//! |-------|-----------------------------------------------|
-//! | SOL   | So11111111111111111111111111111111111111112   |
-//! | USDC  | EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v |
 
 use std::time::Duration;
 
@@ -47,16 +41,8 @@ use solana_sdk::{
 };
 use tracing::{debug, info, warn};
 
-// ---------------------------------------------------------------------------
-// Token mints
-// ---------------------------------------------------------------------------
-
 pub const MINT_SOL:  &str = "So11111111111111111111111111111111111111112";
 pub const MINT_USDC: &str = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
-
-// ---------------------------------------------------------------------------
-// Errors
-// ---------------------------------------------------------------------------
 
 #[derive(Debug, thiserror::Error)]
 pub enum SwapError {
@@ -87,10 +73,6 @@ pub enum SwapError {
     #[error("quote returned zero output amount")]
     ZeroOutput,
 }
-
-// ---------------------------------------------------------------------------
-// Config
-// ---------------------------------------------------------------------------
 
 #[derive(Debug, Clone)]
 pub struct JupiterConfig {
@@ -427,9 +409,6 @@ impl JupiterClient {
     }
 }
 
-// ---------------------------------------------------------------------------
-// Tests
-// ---------------------------------------------------------------------------
 
 #[cfg(test)]
 mod tests {

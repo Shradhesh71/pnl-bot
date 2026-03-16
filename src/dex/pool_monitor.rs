@@ -273,6 +273,14 @@ pub fn default_pools() -> Vec<PoolEntry> {
         PoolEntry::orca(SOL_USDC_8,  DecimalConfig::SOL_USDC),
         PoolEntry::orca(SOL_USDT_64, DecimalConfig::SOL_USDT),
         PoolEntry::raydium(ray_pools::SOL_USDC, DecimalConfig::SOL_USDC),
+
+        PoolEntry::orca(WIF_USDC, DecimalConfig::WIF_USDC),
+        PoolEntry::orca(JTO_USDC, DecimalConfig::JTO_USDC),
+        PoolEntry::orca(BONK_USDC, DecimalConfig::BONK_USDC),
+
+        PoolEntry::raydium(WIF_USDC, DecimalConfig::WIF_USDC),
+        PoolEntry::raydium(JTO_USDC, DecimalConfig::JTO_USDC),
+        PoolEntry::raydium(BONK_USDC, DecimalConfig::BONK_USDC)
     ]
 }
 
